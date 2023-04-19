@@ -98,7 +98,7 @@ export default function HomePage() {
     <View>
 
       <Text>
-        Homepage
+        Homepage Yeah
       </Text>
     </View>
 
