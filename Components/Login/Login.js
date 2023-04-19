@@ -34,8 +34,12 @@ import { TextInput } from 'react-native-gesture-handler';
            
 
         return (
-            <View style={{ marginTop: "15%" }}>
-              <View style={{ width: "30%", marginTop: "2%" }}>
+
+            <View style={{ marginTop: "15%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+
+              <View style={{ width: "60%", marginTop: "2%" }}>
+                <Text style={{ fontSize: 25, marginBottom: "60%"}}>Ingresa a tu Cuenta</Text>
                 <Text style={{ fontSize: 16 }}>Correo electrónico:</Text>
                 <TextInput
                   keyboardType="email-address"
@@ -47,7 +51,8 @@ import { TextInput } from 'react-native-gesture-handler';
                   style={{ borderWidth: 1, padding: 5 }}
                 />
               </View>
-              <View style={{ width: "30%", marginTop: "2%" }}>
+
+              <View style={{ width: "60%", marginTop: "2%" }}>
                 <Text style={{ fontSize: 16 }}>Contraseña:</Text>
                 <TextInput
                   secureTextEntry={true}
@@ -59,15 +64,21 @@ import { TextInput } from 'react-native-gesture-handler';
                   style={{ borderWidth: 1, padding: 5 }}
                 />
               </View>
-              <View style={{ marginTop: "5%" }}>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
                 <TouchableOpacity
                   title="Iniciar sesión"
                   onPress={handleSubmit}
-                  color="#063455">
-                    <Text>Iniciar Sesion</Text>
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Iniciar Sesion</Text>
                 </TouchableOpacity>
               </View>
+
               {errorMessage && <Text>{errorMessage}</Text>}
+              
             </View>
           );
           
