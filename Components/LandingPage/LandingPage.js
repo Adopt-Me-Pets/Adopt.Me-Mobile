@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import getcountries from "../../Actions/getCountries";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -106,13 +106,13 @@ import adoptmelogo from "../../Imagenes/adoptmelogo.png";
         )}
 
 
-<TouchableOpacity
-  style={[styles.button, isButtonEnabled ? styles.enabledButton : styles.disabledButton]}
-  onPress={() => props.navigation.navigate('HomePage')}
-  disabled={!isButtonEnabled}
->
-  <Text style={[styles.buttonText, isButtonEnabled ? styles.enabledButtonText : styles.disabledButtonText]}>Entrar</Text>
-</TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, isButtonEnabled ? styles.enabledButton : styles.disabledButton]}
+        onPress={() => props.navigation.navigate('HomePage')}
+        disabled={!isButtonEnabled}
+      >
+        <Text style={[styles.buttonText, isButtonEnabled ? styles.enabledButtonText : styles.disabledButtonText]}>Entrar</Text>
+      </TouchableOpacity>
 
     </View>
   );

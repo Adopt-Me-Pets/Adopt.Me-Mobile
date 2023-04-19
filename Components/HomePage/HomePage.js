@@ -1,21 +1,25 @@
-import { Text, View } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { LoginContext } from '../Login/loginProvider';
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import getDetalleUsuario from "../../Actions/getDetalleUsuario";
 import getusers from "../../Actions/getusers";
+import NavBar from "../NavBar/NavBar";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomePage() {
 
   const dispatch = useDispatch();
   const detalleUser = useSelector((state) => state.detalleUsuario); 
-  const { isLoggedIn, setLoggedIn } = useContext(LoginContext);
+  const { isLoggedIn = false, setLoggedIn } = useContext(LoginContext);
   const userData2 = useSelector((state) => state.userData);
   const userId = userData2;
   const usuario = useSelector((state) => state.users);
   const usuario2 = usuario.data;
   const usuario3 = userId ? usuario2.filter(({ email }) => email === userId.email) : [];
   const id = usuario3[0]?._id ?? null;
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function checkLoggedIn() {
@@ -71,6 +75,8 @@ export default function HomePage() {
 
     return (
       <View >
+
+        <NavBar />
         
         <View >        
           {!isLoggedIn && (
@@ -97,9 +103,9 @@ export default function HomePage() {
 
     <View>
 
-      <Text>
-        Homepage
-      </Text>
+      <NavBar />
+
+
     </View>
 
   )

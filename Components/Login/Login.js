@@ -4,9 +4,11 @@ import { LoginContext } from '../Login/loginProvider';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../Actions/userLogin';
-import { Button, FormLabel, Grid, Input } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
-    function Login() {
+    export default function Login() {
 
         const [email, setEmail] = useState('');
         const [contrasena, setContrasena] = useState('');
@@ -16,61 +18,57 @@ import { Button, FormLabel, Grid, Input } from 'react-native-elements';
         const dispatch = useDispatch();
 
         const handleSubmit = async () => {
-            try {
-             const response = await axios.post('http://localhost:3001/login', {
-                email: email,
-                contrasena: contrasena
+          try {
+            const response = await axios.post('http://192.168.100.18:19001/login', {
+              email: email,
+              contrasena: contrasena
             });
-                localStorage.setItem('token', response.data.token);
-                login();
-                dispatch(setUser(response.data));
-                navigation.navigate('Homepage');
-            } catch (error) {
-                setErrorMessage('No se pudo iniciar sesión. Por favor, verifique sus credenciales.');
-            }
+            await AsyncStorage.setItem('token', response.data.token);
+            login();
+            dispatch(setUser(response.data));
+            navigation.navigate('HomePage');
+          } catch (error) {
+            setErrorMessage('No se pudo iniciar sesión. Por favor, verifique sus credenciales.');
+          }
         };
+           
 
- return (
-
-        <Grid container spacing={3} alignItems="center" justify="center" style={{ marginTop: "15%"}}>
-
-        <Grid item xs={12} style={{ width: "30%", marginTop: "2%" }}>
-        <FormLabel htmlFor="email">Correo electrónico:</FormLabel>
-        <Input
-            keyboardType="email-address"
-            id="email"
-            name="email"
-            value={email}
-            onChangeText={(value) => setEmail(value)}
-            required
-            style={{ width: "80%"}}
-        />
-        </Grid>
-
-        <Grid item xs={12} style={{ width: "30%", marginTop: "2%" }}>
-        <FormLabel htmlFor="password">Contraseña:</FormLabel>
-        <Input
-            secureTextEntry={true}
-            id="password"
-            name="password"
-            value={contrasena}
-            onChangeText={(value) => setContrasena(value)}
-            required
-            style={{ width: "80%"}}
-        />
-        </Grid>
-
-        <Grid item xs={12} style={{ marginTop:"5%"}}>
-        <Button
-        title="Iniciar sesión"
-        onPress={handleSubmit}
-        buttonStyle={{ backgroundColor: "#063455" }}
-        />
-        </Grid>
-        {errorMessage && <Text>{errorMessage}</Text>}
-
-        </Grid>
-    );
+        return (
+            <View style={{ marginTop: "15%" }}>
+              <View style={{ width: "30%", marginTop: "2%" }}>
+                <Text style={{ fontSize: 16 }}>Correo electrónico:</Text>
+                <TextInput
+                  keyboardType="email-address"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChangeText={(value) => setEmail(value)}
+                  required
+                  style={{ borderWidth: 1, padding: 5 }}
+                />
+              </View>
+              <View style={{ width: "30%", marginTop: "2%" }}>
+                <Text style={{ fontSize: 16 }}>Contraseña:</Text>
+                <TextInput
+                  secureTextEntry={true}
+                  id="password"
+                  name="password"
+                  value={contrasena}
+                  onChangeText={(value) => setContrasena(value)}
+                  required
+                  style={{ borderWidth: 1, padding: 5 }}
+                />
+              </View>
+              <View style={{ marginTop: "5%" }}>
+                <TouchableOpacity
+                  title="Iniciar sesión"
+                  onPress={handleSubmit}
+                  color="#063455">
+                    <Text>Iniciar Sesion</Text>
+                </TouchableOpacity>
+              </View>
+              {errorMessage && <Text>{errorMessage}</Text>}
+            </View>
+          );
+          
  }
-
-export default Login;
