@@ -74,41 +74,60 @@ export default function HomePage() {
   if (isLoggedIn && usuarios.tipo === "paseador") {
 
     return (
-      <View >
+      <View  >
 
         <NavBar />
-        
-        <View >        
-          {!isLoggedIn && (
-            <View>
-              <TouchableOpacity  onPress={() => navigation.navigate('SignUp')}>
-                <Text >Registrarse</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
 
-        <View>
-          <TouchableOpacity  onPress={() => navigation.navigate('GpsPaseador')}>
-            <Text >Dar mi Posicion de GPS</Text>
+        <View style={{ marginTop: "15%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <TouchableOpacity  
+             style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+             onPress={() => navigation.navigate('GpsPaseador')}>
+            <Text style={{ color: "white"}}>Dar mi Posicion de GPS</Text>
           </TouchableOpacity>
         </View>
 
       </View>
     );
 
-} else {
+  } else if (isLoggedIn && usuarios.paseadorContratado !== undefined && usuarios.paseadorContratado !== ""){
 
-  return (
+    return (
 
-    <View>
+      <View>
+        <NavBar />
+        <Text>
+          Usuario que Contrato a un Paseador
+        </Text>
+      </View>
 
-      <NavBar />
+    )
 
 
-    </View>
+  } else if (isLoggedIn && usuarios.paseadorContratado === "" && usuarios.paseadorContratado === undefined) {
 
-  )
+    return (
 
-}
+      <View>
+        <NavBar />
+        <Text>
+          Usuario que No contrato a un Paseador
+        </Text>
+      </View>
+
+    )
+
+  } else {
+
+    return (
+
+      <View>
+        <NavBar />
+        <Text>
+          Usuario que no se Registro
+        </Text>
+      </View>
+
+    )
+
+  }
 }

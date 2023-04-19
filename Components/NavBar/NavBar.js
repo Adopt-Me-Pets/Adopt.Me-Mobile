@@ -24,18 +24,24 @@ export default function NavBar() {
 
 
   return (
+
     <View style={styles.container}>
+
       <StatusBar backgroundColor="black" barStyle="null" />
+
       <TouchableOpacity onPress={() => navigation.navigate('HomePage')} >
       <Text style={styles.title}>Adopt.Me</Text>
       </TouchableOpacity>
       
       {!isLoggedIn && (
+
       <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.button}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       )}
+
       {isLoggedIn && (
+
         <View>
           
         <TouchableOpacity onPress={() => navigation.navigate('Perfil')} style={styles.button}>
@@ -48,6 +54,7 @@ export default function NavBar() {
 
      </View>
       )}
+      
     </View>
   );
 }

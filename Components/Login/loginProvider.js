@@ -22,8 +22,10 @@ export const LoginProvider = (props) => {
   };
 
   return (
+
     <LoginContext.Provider value={{ isLoggedIn, login, logout, setLoggedIn }}>
       {props.children}
     </LoginContext.Provider>
+    
   );
 };

@@ -5,6 +5,21 @@ import LandingPage from '../Components/LandingPage/LandingPage';
 import HomePage from '../Components/HomePage/HomePage';
 import Login from '../Components/Login/Login';
 import Perfil from '../Components/Perfil/Perfil';
+import DarUbicacionPaseadorGps from '../Components/GpsTiempoReal/DarUbicacionPaseador';
+import VerGpsMascota from '../Components/GpsTiempoReal/VerGpsMascota';
+import RegistroUsuario from '../Components/FormularioRegistro.js/FormularioRegistro';
+import Cartelito from '../Components/FormularioRegistro.js/Cartelito';
+import Validacion from '../Components/FormularioRegistro.js/Validacion';
+import RegistroMascota from '../Components/FormularioDonarMascota/FormularioDonarMascota';
+import DetalleMascotas from '../Components/AdoptarMascota/DetalleMascotas';
+import ReportarMascotaPerdida from '../Components/MascotasPerdidas/ReportarMascota';
+import BuscarMascotaPerdida from '../Components/MascotasPerdidas/BuscarMascota';
+import HomePerros from '../Components/AdoptarMascota/HomePerros';
+import HomeGatos from '../Components/AdoptarMascota/HomeGatos';
+import PlanesMascotaPerdida from '../Components/PlanesMascotasPerdidas/PlanesMascotasPerdidas';
+import DetallePaseador from '../Components/Paseadores/DetallePaseador';
+import ListadoPaseadores from '../Components/Paseadores/ListadoPaseadores';
+
 
 const Stack = createStackNavigator();
 
@@ -26,6 +41,48 @@ export default function App() {
   // options={{ headerShown: false }}
   />
   <Stack.Screen name="Perfil" component={Perfil} 
+  // options={{ headerShown: false }}
+  />
+    <Stack.Screen name="GpsPaseador" component={DarUbicacionPaseadorGps} 
+  // options={{ headerShown: false }}
+  />
+   <Stack.Screen name="VerGpsMascota" component={VerGpsMascota} 
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="RegistroUsuario" component={RegistroUsuario} 
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="Cartelito" component={Cartelito} 
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="Validacion" component={Validacion} 
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="RegistroMascota" component={RegistroMascota} 
+  // options={{ headerShown: false }}
+  />
+<Stack.Screen name="DetalleMascotas" component={DetalleMascotas} 
+  // options={{ headerShown: false }}
+  />
+   <Stack.Screen name="HomePerros" component={HomePerros} 
+  // options={{ headerShown: false }}
+  />
+   <Stack.Screen name="HomeGatos" component={HomeGatos} 
+  // options={{ headerShown: false }}
+  />
+   <Stack.Screen name="ReportarMascota" component={ReportarMascotaPerdida} 
+  // options={{ headerShown: false }}
+  />
+   <Stack.Screen name="BuscarMascota" component={BuscarMascotaPerdida} 
+  // options={{ headerShown: false }}
+  />
+   <Stack.Screen name="PlanesMascotasPerdidas" component={PlanesMascotaPerdida} 
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="DetallePaseador" component={DetallePaseador} 
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="ListadoPaseadores" component={ListadoPaseadores}
   // options={{ headerShown: false }}
   />
 
