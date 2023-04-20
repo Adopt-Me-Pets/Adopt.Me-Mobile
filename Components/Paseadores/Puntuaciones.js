@@ -7,7 +7,7 @@ export default function Puntuaciones() {
 
         <View>
             <Text>
-                Puntuar a paseadores
+               Funcion para puntuar al paseador
             </Text>
         </View>
     )
