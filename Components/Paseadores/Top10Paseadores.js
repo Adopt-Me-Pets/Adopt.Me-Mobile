@@ -1,13 +1,13 @@
 import { Text, View } from "react-native";
 
 
-export default function RegistroUsuario() {
+export default function Top10Paseadores() {
 
     return (
 
         <View>
             <Text>
-                Registro de usuario o paseador
+               Top 10 de los paseadores de tu ciudad
             </Text>
         </View>
     )

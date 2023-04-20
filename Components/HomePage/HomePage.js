@@ -7,6 +7,7 @@ import getusers from "../../Actions/getusers";
 import NavBar from "../NavBar/NavBar";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function HomePage() {
 
@@ -92,14 +93,109 @@ export default function HomePage() {
   } else if (isLoggedIn && usuarios.paseadorContratado !== undefined && usuarios.paseadorContratado !== ""){
 
     return (
+<View>
 
-      <View>
-        <NavBar />
-        <Text>
-          Usuario que Contrato a un Paseador
-        </Text>
+<NavBar />
+
+<ScrollView>
+<View>
+
+
+<View style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+
+      <View style={{ marginTop: "15%", width: "50%" }}>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('VerGpsMascota')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Ubicacion de mi Mascota</Text>
+        </TouchableOpacity>
       </View>
 
+      <View style={{ marginTop: "15%", width: "50%" }}>
+        <TouchableOpacity
+         onPress={() => navigation.navigate('Top10Paseadores')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Top 10 Paseadores</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: "15%", width: "50%" }}>
+        <TouchableOpacity
+         onPress={() => navigation.navigate('PlanesMascotasPerdidas')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Planes Mascota Perdida</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: "15%", width: "50%" }}>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('HomePerros')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Adoptar Perro</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: "15%", width: "50%" }}>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('HomeGatos')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Adoptar Gato</Text>
+        </TouchableOpacity>
+      </View>
+
+
+      <View style={{ marginTop: "15%", width: "50%" }}>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('RegistroMascota')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Dar en Adopcion</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: "15%", width: "50%" }}>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('BuscarMascota')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Buscar Mascota Perdida</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: "15%", width: "50%", marginBottom: "30%" }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ReportarMascota')}
+          color="#063455"
+          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+          >
+            <Text 
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Reportar Mascota Perdida</Text>
+        </TouchableOpacity>
+      </View>
+
+      </View>
+    </View>
+    </ScrollView>
+    </View>
     )
 
 
@@ -108,12 +204,109 @@ export default function HomePage() {
     return (
 
       <View>
-        <NavBar />
-        <Text>
-          Usuario que No contrato a un Paseador
-        </Text>
-      </View>
 
+        <NavBar />
+
+      <ScrollView>
+      <View>
+
+
+        <View style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('ListadoPaseadores')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Contratar Paseador</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                 onPress={() => navigation.navigate('Top10Paseadores')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Top 10 Paseadores</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                 onPress={() => navigation.navigate('PlanesMascotasPerdidas')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Planes Mascota Perdida</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('HomePerros')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Adoptar Perro</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('HomeGatos')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Adoptar Gato</Text>
+                </TouchableOpacity>
+              </View>
+
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('RegistroMascota')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Dar en Adopcion</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('BuscarMascota')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Buscar Mascota Perdida</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%", marginBottom: "30%" }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ReportarMascota')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Reportar Mascota Perdida</Text>
+                </TouchableOpacity>
+              </View>
+
+              </View>
+      </View>
+      </ScrollView>
+      </View>
     )
 
   } else {
@@ -121,12 +314,119 @@ export default function HomePage() {
     return (
 
       <View>
-        <NavBar />
-        <Text>
-          Usuario que no se Registro
-        </Text>
-      </View>
 
+        <NavBar />
+
+      <ScrollView>
+      <View>
+
+
+        <View style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+
+        <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('RegistroUsuario')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Registrarse</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('ListadoPaseadores')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Contratar Paseador</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                 onPress={() => navigation.navigate('Top10Paseadores')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Top 10 Paseadores</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                 onPress={() => navigation.navigate('PlanesMascotasPerdidas')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Planes Mascota Perdida</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('HomePerros')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Adoptar Perro</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('HomeGatos')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Adoptar Gato</Text>
+                </TouchableOpacity>
+              </View>
+
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('RegistroMascota')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Dar en Adopcion</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%" }}>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('BuscarMascota')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Buscar Mascota Perdida</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ marginTop: "15%", width: "50%", marginBottom: "30%" }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ReportarMascota')}
+                  color="#063455"
+                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
+                  >
+                    <Text 
+                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Reportar Mascota Perdida</Text>
+                </TouchableOpacity>
+              </View>
+
+              </View>
+      </View>
+      </ScrollView>
+      </View>
     )
 
   }
