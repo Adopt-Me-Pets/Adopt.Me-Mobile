@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-
+import react from "react";
 
 export default function Cartelito() {
 
