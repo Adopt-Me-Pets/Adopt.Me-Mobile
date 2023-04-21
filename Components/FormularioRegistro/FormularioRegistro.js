@@ -1,4 +1,4 @@
-import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal, ScrollView } from "react-native";
+import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal, ScrollView, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import getcountries from "../../Actions/getCountries";
 import getusers from "../../Actions/getusers";
@@ -8,11 +8,15 @@ import Toast from 'react-native-toast-message';
 // import Geolocation from 'react-native-geolocation-service';
 import Cartelito from "../FormularioRegistro/Cartelito";
 import { Picker } from '@react-native-picker/picker';
-import { ImagePicker } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
 import createUser from "../../Actions/createuser";
 import { Checkbox } from 'react-native-paper';
+import { initializeApp } from 'firebase/app';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 
+// Traer Pais y Ciudad
+// Hacer el mapa
 
 export default function RegistroUsuario() {
 
@@ -25,6 +29,9 @@ export default function RegistroUsuario() {
     dispatch(getcountries());
     dispatch(getusers());
     }, [dispatch]);
+
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [input, setInput] = useState({
         usuario: "",
@@ -53,19 +60,6 @@ export default function RegistroUsuario() {
         paypal: ""
       });
 
-      console.log("usuario", input.usuario)
-      console.log("contraseña", input.contrasena)
-      console.log("repitaContrseña", input.repitaContrasena)
-      console.log("nombre", input.nombre)
-      console.log("telefono", input.telefono)
-      console.log("pais", input.pais)
-      console.log("ciudad", input.ciudad)
-      console.log("nacimiento", input.nacimiento)
-      console.log("tipo", input.tipo)
-      console.log("direccion", input.direccion)
-      console.log("terminos", input.terminos)
-      console.log("paypal", input.paypal)
-      console.log("email", input.email)
       ///////////////////////////////////////////////////////////////////
 
       const [isSubmit, setisSubmit] = useState(false);
@@ -74,6 +68,24 @@ export default function RegistroUsuario() {
       const [selectedCountry, setSelectedCountry] = useState("");
       const [modalVisible, setModalVisible] = useState(false);
       const [checked, setChecked] = useState(false);
+
+      console.log("submit", isSubmit)
+
+      useEffect(() => {
+        const { tipo, nombre, usuario, telefono, direccion, terminos, fotoPerfil, nacimiento, email, contrasena, repitaContrasena, dni1, dni2, servicio, paypal } = input;
+        
+        if (
+          tipo === "usuario" && nombre && usuario && telefono && direccion && terminos === true && fotoPerfil && nacimiento && email && contrasena && repitaContrasena
+        ) {
+          setisSubmit(true);
+        } else if (
+          tipo === "paseador" && nombre && usuario && telefono && direccion && terminos === true && fotoPerfil && nacimiento && email && contrasena && repitaContrasena && dni1 && dni2 && servicio && paypal
+        ) {
+          setisSubmit(true);
+        } else {
+          setisSubmit(false);
+        }
+      }, [input]);
 
             
         let noRepeatUser = undefined;
@@ -242,59 +254,111 @@ export default function RegistroUsuario() {
           //   });
           // }
 
-////////////////////////////////////////////////// GUARDAR FOTOS///////////////////////////////////////////
+///////////////////////////// SUBIR IMAGENES FIREBASE /////////////////////////////////////////////////////////////////////
 
-        async function selectImage() {
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
 
-          if (!result.cancelled) {
-            setInput({ ...input, fotoPerfil: result.uri });
-          }   
+      const firebaseConfig = {
+        apiKey: "AIzaSyAU92LeMpd7lymTILDLkz2FkPuDx_PSGbk",
+        authDomain: "adoptme-9d02f.firebaseapp.com",
+        projectId: "adoptme-9d02f",
+        storageBucket: "adoptme-9d02f.appspot.com",
+      };
+
+        initializeApp(firebaseConfig);
+     
+      const selectImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+      
+        if (!result.canceled) {
+
+          const storage = getStorage();
+          const storageRef = ref(storage, "usuario/");
+    
+          const response = await fetch(result.assets[0].uri);
+          const blob = await response.blob();
+          await uploadBytes(storageRef, blob);
+      
+          const downloadURL = await getDownloadURL(storageRef);
+
+          setInput({ ...input, fotoPerfil: downloadURL });
         }
+      };
+    
 
-        async function selectImage2() {
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
 
-          if (!result.cancelled) {
-            setInput({ ...input, dni1: result.uri });
-          }   
+      const selectImage2 = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+      
+        if (!result.canceled) {
+
+          const storage = getStorage();
+          const storageRef = ref(storage, "usuario/");
+    
+          const response = await fetch(result.assets[0].uri);
+          const blob = await response.blob();
+          await uploadBytes(storageRef, blob);
+      
+          const downloadURL = await getDownloadURL(storageRef);
+
+          setInput({ ...input, dni1: downloadURL });
         }
+      };
 
-        async function selectImage3() {
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
+      const selectImage3 = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+      
+        if (!result.canceled) {
 
-          if (!result.cancelled) {
-            setInput({ ...input, dni2: result.uri });
-          }   
+          const storage = getStorage();
+          const storageRef = ref(storage, "usuario/");
+    
+          const response = await fetch(result.assets[0].uri);
+          const blob = await response.blob();
+          await uploadBytes(storageRef, blob);
+      
+          const downloadURL = await getDownloadURL(storageRef);
+
+          setInput({ ...input, dni2: downloadURL });
         }
+      };
 
-        async function selectImage4() {
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
+      const selectImage4 = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+      
+        if (!result.canceled) {
 
-          if (!result.cancelled) {
-            setInput({ ...input, servicios: result.uri });
-          }   
+          const storage = getStorage();
+          const storageRef = ref(storage, "usuario/");
+    
+          const response = await fetch(result.assets[0].uri);
+          const blob = await response.blob();
+          await uploadBytes(storageRef, blob);
+      
+          const downloadURL = await getDownloadURL(storageRef);
+
+          setInput({ ...input, servicio: downloadURL });
         }
+      };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -303,7 +367,7 @@ export default function RegistroUsuario() {
           return (
               <ScrollView>
                 
-            <View style={{ justifyContent: "center", alignItems: "center", marginTop: "50%"}}>
+            <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 360}}>
               <Text>Registro de usuario o paseador</Text>
 
               {cartelito ? (
@@ -311,8 +375,13 @@ export default function RegistroUsuario() {
               ) : (
                 <>
 
-                {input.fotoPerfil && <Image source={{ uri: input.fotoPerfil }} style={{ width: 200, height: 200 }} />}
-                <Button title="Foto de Perfil" onPress={selectImage} />
+                <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                      {input.fotoPerfil && (
+                        <Image source={{ uri: input.fotoPerfil }} style={{ width: 300, height: 300 }} />
+                      )}
+                      <Button title="Seleccionar imagen" onPress={selectImage} />
+
+                    </View>
 
                   <TextInput
                   style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -419,15 +488,22 @@ export default function RegistroUsuario() {
                       />
                       <Text>Debes tener una cuenta de Paypal para recibir los pagos</Text>
 
-                {input.dni1 && <Image source={{ uri: dni1 }} style={{ width: 200, height: 200 }} />}
-                <Button title="Dni Frente" onPress={selectImage2} />
 
-                {input.dni2 && <Image source={{ uri: dni2 }} style={{ width: 200, height: 200 }} />}
-                <Button title="Dni Dorso" onPress={selectImage3} />
+                      {input.dni1 && (
+                        <Image source={{ uri: input.dni1 }} style={{ width: 100, height: 100 }} />
+                      )}
+                      <Button title="Dni Frente" onPress={selectImage2} />
 
-                {input.servicios && <Image source={{ uri: servicios }} style={{ width: 200, height: 200 }} />}
-                <Button title="Servicio a tu Nombre" onPress={selectImage4} />
-                      
+                      {input.dni2 && (
+                        <Image source={{ uri: input.dni2 }} style={{ width: 100, height: 100 }} />
+                      )}
+                      <Button title="Dni Dorso" onPress={selectImage3} />
+
+                      {input.servicio && (
+                        <Image source={{ uri: input.servicio }} style={{ width: 100, height: 100 }} />
+                      )}
+                      <Button title="Servicio" onPress={selectImage4} />
+                     
                     </View>
                   )}
 
@@ -532,16 +608,13 @@ export default function RegistroUsuario() {
                   </Modal>
 
                  <View
-                 style={{justifyContent: "center", alignItems: "center", marginTop: "10%", marginBottom: "90%"}}
+                 style={{justifyContent: "center", alignItems: "center", marginTop: "10%", marginBottom: "200%"}}
                  >
                   <Button
                       
                       title="Registrarme"
                       onPress={(e) => handleSubmit(e)}
-                      disabled={
-                        (input.tipo === "paseador" && (!input.dni1 || !input.dni2 || !input.servicio)) || !input.terminos || !isSubmit ||
-                        (input.tipo === "usuario" && (!isSubmit || !input.terminos || input.tipo === "" )) 
-                      }
+                      disabled={!isSubmit}
                     />
                     </View>
                 </>
