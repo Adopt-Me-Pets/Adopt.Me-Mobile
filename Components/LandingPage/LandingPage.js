@@ -73,11 +73,14 @@ import adoptmelogo from "../../Imagenes/adoptmelogo.png";
         <Text
         style={{ marginBottom: "-10%"}}
         >Elegir País</Text>
+
       <View style={{ width: "60%", borderColor: "black", borderWidth: 1, borderRadius: 15}}>
+
         <Picker
             selectedValue={selectedCountry}
             onValueChange={handleCountrySelect}
         >
+
         <Picker.Item label="Elegir País" value="" />
         {countries3 &&
         countries3
@@ -86,22 +89,28 @@ import adoptmelogo from "../../Imagenes/adoptmelogo.png";
         <Picker.Item key={c} label={c} value={c} />
         ))}
         </Picker>
+
         </View>
 
         <Text
         style={{ marginBottom: "-10%"}}
         >Elegir Ciudad</Text>
+
         {selectedCountry && countries2 && (
+
         <View style={{width: "60%", borderColor: "black", borderWidth: 1, borderRadius: 15}}>
+
             <Picker
             selectedValue={selectedCity}
             onValueChange={handleCitySelect}
             >
+
             <Picker.Item label="Elegir Ciudad" value="" />
             {(countries2.find((c) => c.country === selectedCountry) || {cities: []}).cities.map((c) => (
                 <Picker.Item key={c} label={c} value={c} />
             ))}
             </Picker>
+            
         </View>
         )}
 
