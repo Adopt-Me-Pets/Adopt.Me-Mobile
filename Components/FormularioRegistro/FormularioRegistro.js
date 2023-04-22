@@ -1,11 +1,11 @@
-import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal, ScrollView, FlatList } from "react-native";
+import { Button, Image, StyleSheet, Text, TextInput, View, Modal, ScrollView, PermissionsAndroid  } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import getcountries from "../../Actions/getCountries";
 import getusers from "../../Actions/getusers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Toast from 'react-native-toast-message';
-// import Geolocation from 'react-native-geolocation-service';
+import Geolocation from 'react-native-geolocation-service';
 import Cartelito from "../FormularioRegistro/Cartelito";
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -13,10 +13,12 @@ import createUser from "../../Actions/createuser";
 import { Checkbox } from 'react-native-paper';
 import { initializeApp } from 'firebase/app';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid';
+import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
 
 
 // Traer Pais y Ciudad
-// Hacer el mapa
 
 export default function RegistroUsuario() {
 
@@ -60,6 +62,9 @@ export default function RegistroUsuario() {
         paypal: ""
       });
 
+      console.log("latitude", input.lat)
+      console.log("longitude", input.lng)
+
       ///////////////////////////////////////////////////////////////////
 
       const [isSubmit, setisSubmit] = useState(false);
@@ -69,17 +74,18 @@ export default function RegistroUsuario() {
       const [modalVisible, setModalVisible] = useState(false);
       const [checked, setChecked] = useState(false);
 
-      console.log("submit", isSubmit)
-
       useEffect(() => {
-        const { tipo, nombre, usuario, telefono, direccion, terminos, fotoPerfil, nacimiento, email, contrasena, repitaContrasena, dni1, dni2, servicio, paypal } = input;
+        const { tipo, nombre, usuario, telefono, direccion, terminos, fotoPerfil, nacimiento, 
+          email, contrasena, repitaContrasena, dni1, dni2, servicio, paypal } = input;
         
         if (
-          tipo === "usuario" && nombre && usuario && telefono && direccion && terminos === true && fotoPerfil && nacimiento && email && contrasena && repitaContrasena
+          tipo === "usuario" && nombre && usuario && telefono && direccion && terminos === true 
+          && fotoPerfil && nacimiento && email && contrasena && repitaContrasena
         ) {
           setisSubmit(true);
         } else if (
-          tipo === "paseador" && nombre && usuario && telefono && direccion && terminos === true && fotoPerfil && nacimiento && email && contrasena && repitaContrasena && dni1 && dni2 && servicio && paypal
+          tipo === "paseador" && nombre && usuario && telefono && direccion && terminos === true 
+          && fotoPerfil && nacimiento && email && contrasena && repitaContrasena && dni1 && dni2 && servicio && paypal
         ) {
           setisSubmit(true);
         } else {
@@ -155,104 +161,49 @@ export default function RegistroUsuario() {
 
 /////////////////////////////////////////////////////////// TOMA MI UBICACION ACTUAL SEGUN MI GPS ///////////////////
 
+        const [region, setRegion] = useState({
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+        const [location, setLocation] = useState(null);
+        // const [markerPosition, setMarkerPosition] = useState(null);
+        const mapRef = useRef(null);
 
-        // const [geo, setGeo] = useState({
-        //     lng: -61.043988,
-        //     lat: -34.7361,
-        //   })
+      
+        useEffect(() => {
+          (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+              console.log('Permission to access location was denied');
+              return;
+            }
+      
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+            setInput({
+              lat: location.coords.latitude,
+              lng: location.coords.longitude
+            })
           
-        //   useEffect(() => {
-        //     const getGeoLocation = async () => {
-        //       try {
-        //         const position = await Geolocation.getCurrentPosition(
-        //           (position) => {
-        //             setGeo({
-        //               lat: position.coords.latitude,
-        //               lng: position.coords.longitude,
-        //             })
-        //           },
-        //           (error) => {
-        //             console.log(error)
-        //           },
-        //           {
-        //             enableHighAccuracy: true,
-        //             timeout: 15000,
-        //             maximumAge: 10000,
-        //           },
-        //         );
-        //       } catch (error) {
-        //         console.log(error);
-        //       }
-        //     }
-        //     getGeoLocation();
-        //   }, [])
-
-           /////////////////////////////////////////////////////  MARCADOR MOVIBLE /////////////////////////////////////////////////////7
-
-// const [draggable, setDraggable] = useState(false)
-// const markerRef = useRef(null)
-// const eventHandlers = useMemo(
-//   () => ({
-//     dragend() {
-//       const marker = markerRef.current
-//       if (marker != null) {
-//         setGeo(marker.getLatLng())
-//       }
-//     },
-//   }),
-//   [],
-// )
-// const toggleDraggable = useCallback(() => {
-//   setDraggable((d) => !d)
-// }, [])
-
-          /////////////////////////////////////////////////// GUARDA MI UBICACION ACTUAL EN UN ESTADO Y RENDERIZO  ///////
-
-// const position = [geo.lat, geo.lng]
-
-// const local = position
-
-// function FlyMapTo() {
-
-// const map = useMap()
-
-// useEffect(() => {
-//     map.flyTo(local)
-    
-// // eslint-disable-next-line react-hooks/exhaustive-deps
-// }, {enableHighAccuracy: true})
-
-// return null
-// }
-
-
-///////////////////////////////////////////////////// GUARDA LA UBICACION EN LA BASE DE DATOS //////////////////////
-
-          // function handleLocation() {
-          //   setInput({
-          //     ...input,
-          //     lat2: geo.lat,
-          //     lng2: geo.lng,
-          //   });
-          //   Toast.show({
-          //     text1: "Ubicacion Establecida. Por favor seleccione 'Guardar mi Ubicacion'",
-          //     visibilityTime: 1000,
-          //     autoHide: true,
-          //   });
-          // }
-        
-          // function handleLocation2() {
-          //   setInput({
-          //     ...input,
-          //     lat2: geo.lat,
-          //     lng2: geo.lng,
-          //   });
-          //   Toast.show({
-          //     text1: "Ubicacion Guardada con exito",
-          //     visibilityTime: 1000,
-          //     autoHide: true,
-          //   });
-          // }
+          })();
+        }, []);        
+      
+        useEffect(() => {
+          if (location) {
+            setRegion({
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            });
+      
+            mapRef.current?.animateToRegion(region, 1000);
+          }
+        }, [location]);
+           
+        const [showMap, setShowMap] = useState(false);
 
 ///////////////////////////// SUBIR IMAGENES FIREBASE /////////////////////////////////////////////////////////////////////
 
@@ -277,7 +228,8 @@ export default function RegistroUsuario() {
         if (!result.canceled) {
 
           const storage = getStorage();
-          const storageRef = ref(storage, "usuario/");
+          const uuid = uuidv4();
+          const storageRef = ref(storage, `usuario/${uuid}`);
     
           const response = await fetch(result.assets[0].uri);
           const blob = await response.blob();
@@ -302,7 +254,8 @@ export default function RegistroUsuario() {
         if (!result.canceled) {
 
           const storage = getStorage();
-          const storageRef = ref(storage, "usuario/");
+          const uuid = uuidv4();
+          const storageRef = ref(storage, `usuario/${uuid}`);
     
           const response = await fetch(result.assets[0].uri);
           const blob = await response.blob();
@@ -325,7 +278,8 @@ export default function RegistroUsuario() {
         if (!result.canceled) {
 
           const storage = getStorage();
-          const storageRef = ref(storage, "usuario/");
+          const uuid = uuidv4();
+          const storageRef = ref(storage, `usuario/${uuid}`);
     
           const response = await fetch(result.assets[0].uri);
           const blob = await response.blob();
@@ -348,7 +302,8 @@ export default function RegistroUsuario() {
         if (!result.canceled) {
 
           const storage = getStorage();
-          const storageRef = ref(storage, "usuario/");
+          const uuid = uuidv4();
+          const storageRef = ref(storage, `usuario/${uuid}`);
     
           const response = await fetch(result.assets[0].uri);
           const blob = await response.blob();
@@ -389,8 +344,7 @@ export default function RegistroUsuario() {
                     placeholder="Usuario"
                     value={input.usuario}
                     onChangeText={(newText) => { handleChange("usuario", newText); }}
-                  />
-                
+                  />        
 
                   <TextInput
                   style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -488,21 +442,50 @@ export default function RegistroUsuario() {
                       />
                       <Text>Debes tener una cuenta de Paypal para recibir los pagos</Text>
 
+                      <View >
+                      <Button title="Establecer Ubicacion" onPress={() => setShowMap(true)} />
+                          <Modal visible={showMap} animationType="slide">
+                      <View style={{width: "100%", height: "100%"}}>
+                     
+                          <MapView
+                            style={{ flex: 1}}
+                            initialRegion={region}
+                            showsUserLocation
+                            followsUserLocation
+                            ref={mapRef}
+                          >
+                         
+                            {location && (
+                               <Marker
+                               coordinate={{
+                                 latitude: location.coords.latitude,
+                                 longitude: location.coords.longitude
+                               }}
+                               title="Mi ubicación"
+                             />
+                            )}
+                          </MapView>
+                          <View >
+                            <Button title="Confirmar Ubicacion" onPress={() => setShowMap(false)} />
+                          </View>
+                        </View>
+                        </Modal>
+                        </View>
 
                       {input.dni1 && (
                         <Image source={{ uri: input.dni1 }} style={{ width: 100, height: 100 }} />
                       )}
-                      <Button title="Dni Frente" onPress={selectImage2} />
+                      <Button title="Subir Foto Dni Frente" onPress={selectImage2} />
 
                       {input.dni2 && (
                         <Image source={{ uri: input.dni2 }} style={{ width: 100, height: 100 }} />
                       )}
-                      <Button title="Dni Dorso" onPress={selectImage3} />
+                      <Button title="Subir Foto Dni Dorso" onPress={selectImage3} />
 
                       {input.servicio && (
                         <Image source={{ uri: input.servicio }} style={{ width: 100, height: 100 }} />
                       )}
-                      <Button title="Servicio" onPress={selectImage4} />
+                      <Button title="Subir Foto de Servicio" onPress={selectImage4} />
                      
                     </View>
                   )}

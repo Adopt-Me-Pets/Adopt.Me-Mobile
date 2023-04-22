@@ -20,6 +20,8 @@ import PlanesMascotaPerdida from '../Components/PlanesMascotasPerdidas/PlanesMas
 import DetallePaseador from '../Components/Paseadores/DetallePaseador';
 import ListadoPaseadores from '../Components/Paseadores/ListadoPaseadores';
 import Top10Paseadores from '../Components/Paseadores/Top10Paseadores';
+import MyMap from '../Components/Mapas/mapa';
+
 
 
 const Stack = createStackNavigator();
@@ -87,6 +89,9 @@ export default function App() {
   options={{ headerShown: false }}
   />
   <Stack.Screen name="Top10Paseadores" component={Top10Paseadores}
+  options={{ headerShown: false }}
+  />
+  <Stack.Screen name="Mapa" component={MyMap}
   options={{ headerShown: false }}
   />
 
