@@ -1,11 +1,11 @@
-import { Button, Image, StyleSheet, Text, TextInput, View, Modal, ScrollView, PermissionsAndroid  } from "react-native";
+import { Button, Image, StyleSheet, Text, TextInput, View, Modal, ScrollView  } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import getcountries from "../../Actions/getCountries";
-import getusers from "../../Actions/getusers";
+// import getusers from "../../Actions/getusers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState, useRef } from "react";
 import Toast from 'react-native-toast-message';
-import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from 'react-native-geolocation-service';
 import Cartelito from "../FormularioRegistro/Cartelito";
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -24,12 +24,13 @@ export default function RegistroUsuario() {
 
     const dispatch = useDispatch();
     const Allusers = useSelector((state) => state.users).data; 
-    const country = AsyncStorage.getItem('selectedCountry');
-    const city = AsyncStorage.getItem('selectedCity');
+    const [selectedCountry, setSelectedCountry] = useState(AsyncStorage.getItem('selectedCountry') || '');
+    const [selectedCity, setSelectedCity] = useState(AsyncStorage.getItem('selectedCity') || '');
+    const city = selectedCity._z
+    const country = selectedCountry._z
 
     useEffect(() => {
-    dispatch(getcountries());
-    dispatch(getusers());
+      dispatch(getcountries());
     }, [dispatch]);
 
     
@@ -62,17 +63,29 @@ export default function RegistroUsuario() {
         paypal: ""
       });
 
-      console.log("latitude", input.lat)
-      console.log("longitude", input.lng)
+      useEffect(() => {
+        if (input.ciudad === undefined) {
+          setInput({
+            ciudad: city,
+            pais: country
+          })
+        }
+      }, [input.ciudad])
+
+      useEffect(() => {
+        setInput({
+          ciudad: city,
+          pais: country
+        })
+      }, [city, country])
 
       ///////////////////////////////////////////////////////////////////
 
       const [isSubmit, setisSubmit] = useState(false);
       const [cartelito, setCartelito] = useState(false);
-      const [selectedCity, setSelectedCity] = useState("");
-      const [selectedCountry, setSelectedCountry] = useState("");
       const [modalVisible, setModalVisible] = useState(false);
       const [checked, setChecked] = useState(false);
+      console.log("isSubmit", isSubmit)
 
       useEffect(() => {
         const { tipo, nombre, usuario, telefono, direccion, terminos, fotoPerfil, nacimiento, 
@@ -141,13 +154,11 @@ export default function RegistroUsuario() {
 
 
            function handleChange(name, newText) {            
-              setSelectedCity(city);
-              setSelectedCountry(country)
               setInput((prev) => ({ 
                 ...prev, 
                 [name]: newText,
-                ciudad: selectedCity, 
-                pais: selectedCountry 
+                ciudad: prev.ciudad,
+                pais: prev.pais,
               }));
             }
 
@@ -168,7 +179,6 @@ export default function RegistroUsuario() {
           longitudeDelta: 0.0421,
         });
         const [location, setLocation] = useState(null);
-        // const [markerPosition, setMarkerPosition] = useState(null);
         const mapRef = useRef(null);
 
       
@@ -217,103 +227,101 @@ export default function RegistroUsuario() {
 
         initializeApp(firebaseConfig);
      
-      const selectImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
+        const selectImage = async () => {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+        
+          if (!result.canceled) {
+  
+            const storage = getStorage();
+            const uuid = uuidv4();
+            const storageRef = ref(storage, `usuario/${uuid}`);
       
-        if (!result.canceled) {
-
-          const storage = getStorage();
-          const uuid = uuidv4();
-          const storageRef = ref(storage, `usuario/${uuid}`);
+            const response = await fetch(result.assets[0].uri);
+            const blob = await response.blob();
+            await uploadBytes(storageRef, blob);
+        
+            const downloadURL = await getDownloadURL(storageRef);
+  
+            setInput({ ...input, fotoPerfil: downloadURL });
+          }
+        };
     
-          const response = await fetch(result.assets[0].uri);
-          const blob = await response.blob();
-          await uploadBytes(storageRef, blob);
+        const selectImage2 = async () => {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+        
+          if (!result.canceled) {
+  
+            const storage = getStorage();
+            const uuid = uuidv4();
+            const storageRef = ref(storage, `usuario/${uuid}`);
       
-          const downloadURL = await getDownloadURL(storageRef);
+            const response = await fetch(result.assets[0].uri);
+            const blob = await response.blob();
+            await uploadBytes(storageRef, blob);
+        
+            const downloadURL = await getDownloadURL(storageRef);
+  
+            setInput({ ...input, dni1: downloadURL });
+          }
+        };
 
-          setInput({ ...input, fotoPerfil: downloadURL });
-        }
-      };
-    
-
-
-      const selectImage2 = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
+        const selectImage3 = async () => {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+        
+          if (!result.canceled) {
+  
+            const storage = getStorage();
+            const uuid = uuidv4();
+            const storageRef = ref(storage, `usuario/${uuid}`);
       
-        if (!result.canceled) {
+            const response = await fetch(result.assets[0].uri);
+            const blob = await response.blob();
+            await uploadBytes(storageRef, blob);
+        
+            const downloadURL = await getDownloadURL(storageRef);
+  
+            setInput({ ...input, dni2: downloadURL });
+          }
+        };
 
-          const storage = getStorage();
-          const uuid = uuidv4();
-          const storageRef = ref(storage, `usuario/${uuid}`);
-    
-          const response = await fetch(result.assets[0].uri);
-          const blob = await response.blob();
-          await uploadBytes(storageRef, blob);
+        const selectImage4 = async () => {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+        
+          if (!result.canceled) {
+  
+            const storage = getStorage();
+            const uuid = uuidv4();
+            const storageRef = ref(storage, `usuario/${uuid}`);
       
-          const downloadURL = await getDownloadURL(storageRef);
-
-          setInput({ ...input, dni1: downloadURL });
-        }
-      };
-
-      const selectImage3 = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-      
-        if (!result.canceled) {
-
-          const storage = getStorage();
-          const uuid = uuidv4();
-          const storageRef = ref(storage, `usuario/${uuid}`);
-    
-          const response = await fetch(result.assets[0].uri);
-          const blob = await response.blob();
-          await uploadBytes(storageRef, blob);
-      
-          const downloadURL = await getDownloadURL(storageRef);
-
-          setInput({ ...input, dni2: downloadURL });
-        }
-      };
-
-      const selectImage4 = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-      
-        if (!result.canceled) {
-
-          const storage = getStorage();
-          const uuid = uuidv4();
-          const storageRef = ref(storage, `usuario/${uuid}`);
-    
-          const response = await fetch(result.assets[0].uri);
-          const blob = await response.blob();
-          await uploadBytes(storageRef, blob);
-      
-          const downloadURL = await getDownloadURL(storageRef);
-
-          setInput({ ...input, servicio: downloadURL });
-        }
-      };
+            const response = await fetch(result.assets[0].uri);
+            const blob = await response.blob();
+            await uploadBytes(storageRef, blob);
+        
+            const downloadURL = await getDownloadURL(storageRef);
+  
+            setInput({ ...input, servicio: downloadURL });
+          }
+        };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -399,13 +407,14 @@ export default function RegistroUsuario() {
                       style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
                     name="ciudad"
                     placeholder="Ciudad"
-                    value={input.ciudad}                
+                    value={city}  
+                                  
                   />
                     <TextInput
                     style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
                     name="pais"
                     placeholder="Pais"
-                    value={input.pais}                
+                    value={country}                
                   />
                     <TextInput
                     style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -415,12 +424,13 @@ export default function RegistroUsuario() {
                     onChangeText={(newText) => {handleChange("direccion", newText);  }}
                   />
           
-                  <View style={{ width: "50%"}}>
+                  <View style={{ width: "80%"}}>
                     <Picker
                       name="tipo"
                       selectedValue={input.tipo}
                       onValueChange={(value) => handlePickerChange(value)}
-                    >
+                    >             
+                      <Picker.Item label="Eres Usuario o Paseador?" value="" />
                       <Picker.Item label="Usuario" value="usuario" />
                       <Picker.Item label="Paseador" value="paseador" />
                     </Picker>

@@ -32,6 +32,7 @@ import adoptmelogo from "../../Imagenes/adoptmelogo.png";
   const countries3 = countries2 ? countries2.map(c => c.country) : null;
   const [selectedCountry, setSelectedCountry] = useState(AsyncStorage.getItem('selectedCountry') || '');
   const [selectedCity, setSelectedCity] = useState(AsyncStorage.getItem('selectedCity') || '');
+ 
 
   const handleCountrySelect = (value) => {
     setSelectedCountry(value);
