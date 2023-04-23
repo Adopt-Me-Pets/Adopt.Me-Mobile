@@ -456,6 +456,7 @@ export default function RegistroUsuario() {
                     onBlur={() => {
                       handleBlur('contrasena');
                     }}
+                    secureTextEntry={true}
                   />   
                   {touched.contrasena && errors.contrasena && (
                   <View style={{ flexDirection: 'row', marginTop: 10 }}>
@@ -474,6 +475,7 @@ export default function RegistroUsuario() {
                     onBlur={() => {
                       handleBlur('repitaContrasena');
                     }}
+                    secureTextEntry={true}
                   />
                   {touched.repitaContrasena && errors.repitaContrasena && (
                   <View style={{ flexDirection: 'row', marginTop: 10 }}>
