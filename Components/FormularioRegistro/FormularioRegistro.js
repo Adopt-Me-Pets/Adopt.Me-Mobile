@@ -1,11 +1,9 @@
 import { Button, Image, StyleSheet, Text, TextInput, View, Modal, ScrollView  } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import getcountries from "../../Actions/getCountries";
-// import getusers from "../../Actions/getusers";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState, useRef } from "react";
 import Toast from 'react-native-toast-message';
-// import Geolocation from 'react-native-geolocation-service';
 import Cartelito from "../FormularioRegistro/Cartelito";
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -17,8 +15,6 @@ import { v4 as uuidv4 } from 'uuid';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
-
-// Traer Pais y Ciudad
 
 export default function RegistroUsuario() {
 
@@ -79,13 +75,46 @@ export default function RegistroUsuario() {
         })
       }, [city, country])
 
+      
+///////////////////////////////////////////////// VALIDACIONES //////////////////////////////////////////////
+
+    const [errors, setErrors] = useState({});
+    const [touched, setTouched] = useState({});
+
+    let noRepeatUser = undefined;
+    let noRepeatMail = undefined;
+
+  if (Allusers) {
+    noRepeatUser = Allusers.filter((u) => u.usuario === input.usuario);
+    noRepeatMail = Allusers.filter((u) => u.email === input.email);
+  }
+
+  const validateInput = (name, newText) => {
+    const errors = {};
+
+    if (name === "usuario") {
+      if (!newText) {
+        return "Tenes que ingresar un nombre de usuario";
+      }
+    }
+
+
+        return errors;
+  };
+
+  const handleBlur = (name) => {
+    const newErrors = validateInput(name, input[name]);
+    setErrors({ ...errors, [name]: newErrors });
+    setTouched({ ...touched, [name]: true });
+  };
+  
+
       ///////////////////////////////////////////////////////////////////
 
       const [isSubmit, setisSubmit] = useState(false);
       const [cartelito, setCartelito] = useState(false);
       const [modalVisible, setModalVisible] = useState(false);
       const [checked, setChecked] = useState(false);
-      console.log("isSubmit", isSubmit)
 
       useEffect(() => {
         const { tipo, nombre, usuario, telefono, direccion, terminos, fotoPerfil, nacimiento, 
@@ -105,15 +134,6 @@ export default function RegistroUsuario() {
           setisSubmit(false);
         }
       }, [input]);
-
-            
-        let noRepeatUser = undefined;
-        let noRepeatMail = undefined;
-       
-        if (Allusers) {
-          noRepeatUser = Allusers.filter((u) => u.usuario === input.usuario);
-          noRepeatMail = Allusers.filter((u) => u.email === input.email);
-        }
 
 
           function handleSubmit() {
@@ -137,7 +157,7 @@ export default function RegistroUsuario() {
               if (isSubmit) {
                 dispatch(createUser(input));
                 setCartelito(true);
-          
+
                 Toast.show({
                   type: 'success',
                   text1: 'Usuario creado correctamente',
@@ -153,13 +173,16 @@ export default function RegistroUsuario() {
           }
 
 
-           function handleChange(name, newText) {            
+           function handleChange(name, newText) { 
+            const error = validateInput(name, newText);           
               setInput((prev) => ({ 
                 ...prev, 
                 [name]: newText,
                 ciudad: prev.ciudad,
                 pais: prev.pais,
+                error: error,
               }));
+              setTouched({ ...touched, [name]: true });
             }
 
             function handlePickerChange(value) {
@@ -352,7 +375,18 @@ export default function RegistroUsuario() {
                     placeholder="Usuario"
                     value={input.usuario}
                     onChangeText={(newText) => { handleChange("usuario", newText); }}
-                  />        
+                    onBlur={() => {
+                      handleBlur('usuario');
+                    }}
+                  />
+                  {touched.usuario && errors.usuario && (
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {Object.values(errors.usuario).map((error, index) => (
+                      <Text key={index} style={{ color: 'red' }}>{error}</Text>
+                    ))}
+                  </View>
+                )}
+                    
 
                   <TextInput
                   style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -360,8 +394,7 @@ export default function RegistroUsuario() {
                     placeholder="Contraseña"
                     value={input.contrasena}
                     onChangeText={(newText) => {handleChange("contrasena", newText); }}
-                  />
-        
+                  />       
 
                   <TextInput
                   style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -369,7 +402,7 @@ export default function RegistroUsuario() {
                     placeholder="Repetir Contraseña"
                     value={input.repitaContrasena}
                     onChangeText={(newText) => {handleChange("repitaContrasena", newText);  }}
-                  />       
+                  />   
 
                   <TextInput
                   style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}

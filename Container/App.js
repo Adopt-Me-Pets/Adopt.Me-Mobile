@@ -9,7 +9,6 @@ import DarUbicacionPaseadorGps from '../Components/GpsTiempoReal/DarUbicacionPas
 import VerGpsMascota from '../Components/GpsTiempoReal/VerGpsMascota';
 import RegistroUsuario from '../Components/FormularioRegistro/FormularioRegistro';
 import Cartelito from '../Components/FormularioRegistro/Cartelito';
-import Validacion from '../Components/FormularioRegistro/Validacion';
 import RegistroMascota from '../Components/FormularioDonarMascota/FormularioDonarMascota';
 import DetalleMascotas from '../Components/AdoptarMascota/DetalleMascotas';
 import ReportarMascotaPerdida from '../Components/MascotasPerdidas/ReportarMascota';
@@ -56,9 +55,6 @@ export default function App() {
   options={{ headerShown: false }}
   />
   <Stack.Screen name="Cartelito" component={Cartelito} 
-  options={{ headerShown: false }}
-  />
-  <Stack.Screen name="Validacion" component={Validacion} 
   options={{ headerShown: false }}
   />
   <Stack.Screen name="RegistroMascota" component={RegistroMascota} 
