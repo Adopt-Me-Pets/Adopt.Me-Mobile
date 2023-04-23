@@ -94,10 +94,69 @@ export default function RegistroUsuario() {
 
     if (name === "usuario") {
       if (!newText) {
-        return "Tenes que ingresar un nombre de usuario";
+        return "Debes ingresar un nombre de usuario";
+      } else if (noRepeatUser.length) {
+        return `El nombre de usuario ${newText} no está disponible`;
+    }
+  }
+
+    if (name === "contrasena") {
+      if (!newText) {
+        return "Debes ingresar una contraseña"
+      } else if (
+        !/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(newText)) {
+        return "La contraseña debe tener entre 8 y 16 caracteres, al menos un número, al menos una minúscula y al menos una mayúscula.";
       }
     }
 
+    if (name === "repitaContrasena") {
+      if (!newText) {
+        return "Tenes que repetir la contraseña";
+      } else if (newText !== input.contrasena) {
+        return "Las contraseñas no coinciden";
+      }
+  }
+
+    if (name === "nombre") {
+      if (!newText) {
+        return "Tenes que ingresar un nombre";
+      } else if (!/^[a-z\s]+$/i.test(newText)) {
+        return "El nombre no es válido";
+      }
+  }
+
+    if (name === "telefono") {
+      if (!newText) {
+        return "Tenes que ingresar un telefono";
+      }
+      else if (!/^[0-9]*(\.?)[0-9]+$/.test(newText)) {
+        return "Este campo solo debe contener numeros"
+      }
+      else if (newText.length > 15) {
+        return "El teléfono no es válido";
+      }
+    }
+
+    if (name === "email") {
+      if (!newText) {
+        return "Tenes que ingresar un e-mail";
+      } else if (!/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim.test(newText)) {
+        return "El e-mail no es válido";
+      } else if (noRepeatMail.length) {
+        return "Ya existe una cuenta vinculada a ese mail";
+      }
+    }
+
+    if (name === "nacimiento") {
+      if (!newText) {
+        return "Tenes que ingresar una fecha de nacimiento";
+      } else if (
+        newText.length > 10 ||
+        !/^[0-9-]+$/.test(newText)
+        ) {
+          return "Tenes que ingresar una fecha válida (dd-mm-yyyy)";
+      }
+    }
 
         return errors;
   };
@@ -394,7 +453,17 @@ export default function RegistroUsuario() {
                     placeholder="Contraseña"
                     value={input.contrasena}
                     onChangeText={(newText) => {handleChange("contrasena", newText); }}
-                  />       
+                    onBlur={() => {
+                      handleBlur('contrasena');
+                    }}
+                  />   
+                  {touched.contrasena && errors.contrasena && (
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {Object.values(errors.contrasena).map((error, index) => (
+                      <Text key={index} style={{ color: 'red' }}>{error}</Text>
+                    ))}
+                  </View>
+                )}    
 
                   <TextInput
                   style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -402,7 +471,17 @@ export default function RegistroUsuario() {
                     placeholder="Repetir Contraseña"
                     value={input.repitaContrasena}
                     onChangeText={(newText) => {handleChange("repitaContrasena", newText);  }}
-                  />   
+                    onBlur={() => {
+                      handleBlur('repitaContrasena');
+                    }}
+                  />
+                  {touched.repitaContrasena && errors.repitaContrasena && (
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {Object.values(errors.repitaContrasena).map((error, index) => (
+                      <Text key={index} style={{ color: 'red' }}>{error}</Text>
+                    ))}
+                  </View>
+                )}   
 
                   <TextInput
                   style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -410,7 +489,17 @@ export default function RegistroUsuario() {
                     placeholder="Nombre Completo"
                     value={input.nombre}
                     onChangeText={(newText) => {handleChange("nombre", newText);  }}
+                    onBlur={() => {
+                      handleBlur('nombre');
+                    }}
                   />
+                    {touched.nombre && errors.nombre && (
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {Object.values(errors.nombre).map((error, index) => (
+                      <Text key={index} style={{ color: 'red' }}>{error}</Text>
+                    ))}
+                  </View>
+                )}  
 
                    <TextInput
                    style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -418,7 +507,17 @@ export default function RegistroUsuario() {
                     placeholder="Telefono"
                     value={input.telefono}
                     onChangeText={(newText) => {handleChange("telefono", newText);  }}
+                    onBlur={() => {
+                      handleBlur('telefono');
+                    }}
                   />
+                    {touched.telefono && errors.telefono && (
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {Object.values(errors.telefono).map((error, index) => (
+                      <Text key={index} style={{ color: 'red' }}>{error}</Text>
+                    ))}
+                  </View>
+                )}  
 
                    <TextInput
                    style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -426,7 +525,17 @@ export default function RegistroUsuario() {
                     placeholder="E-Mail"
                     value={input.email}
                     onChangeText={(newText) => {handleChange("email", newText);  }}
+                    onBlur={() => {
+                      handleBlur('email');
+                    }}
                   />
+                   {touched.email && errors.email && (
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {Object.values(errors.email).map((error, index) => (
+                      <Text key={index} style={{ color: 'red' }}>{error}</Text>
+                    ))}
+                  </View>
+                )} 
 
                    <TextInput
                    style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
@@ -434,7 +543,17 @@ export default function RegistroUsuario() {
                     placeholder="DD/MM/AAAA"
                     value={input.nacimiento}
                     onChangeText={(newText) => {handleChange("nacimiento", newText);  }}
+                    onBlur={() => {
+                      handleBlur('nacimiento');
+                    }}
                   />
+                   {touched.nacimiento && errors.nacimiento && (
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {Object.values(errors.nacimiento).map((error, index) => (
+                      <Text key={index} style={{ color: 'red' }}>{error}</Text>
+                    ))}
+                  </View>
+                )} 
                       
                       <TextInput
                       style={{ marginTop: "5%", height: "5%", borderColor: "black", borderWidth: 1, borderRadius: 15, width: "70%"}}
