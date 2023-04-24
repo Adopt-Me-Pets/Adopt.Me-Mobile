@@ -110,7 +110,7 @@ export default function HomePage() {
           style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
           >
             <Text 
-            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Ubicacion de mi Mascota</Text>
+            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Ubicacion del Paseador</Text>
         </TouchableOpacity>
       </View>
 

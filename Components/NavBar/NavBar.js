@@ -4,23 +4,34 @@ import { useNavigation } from '@react-navigation/native';
 import { LoginContext } from '../Login/loginProvider';
 import { useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 export default function NavBar() {
 
   const navigation = useNavigation();
   const { isLoggedIn, logout, setLoggedIn } = useContext(LoginContext);
-
-  console.log("logeado", isLoggedIn)
+  const [authToken, setAuthToken] = useState('');
 
   useEffect(() => {
-  AsyncStorage.getItem('token').then((token) => {
-    if (token) {
+   AsyncStorage.getItem('token').then((value) => {
+    if (value) {
+      setAuthToken(value);
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
+      setAuthToken("")
     }
   });
 }, []);
+
+useEffect(() => {
+  if (authToken) {
+    setLoggedIn(true);
+  } else {
+    setLoggedIn(false);
+  }
+}, [authToken]);
+
 
 
   return (
@@ -33,12 +44,13 @@ export default function NavBar() {
       <Text style={styles.title}>Adopt.Me</Text>
       </TouchableOpacity>
       
-      {!isLoggedIn && (
+      {!isLoggedIn &&  (
 
-      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.button}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
       )}
+
 
       {isLoggedIn && (
 

@@ -275,8 +275,8 @@ export default function RegistroUsuario() {
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
             setInput({
-              lat: location.coords.latitude,
-              lng: location.coords.longitude
+              lat2: location.coords.latitude,
+              lng2: location.coords.longitude
             })
           
           })();

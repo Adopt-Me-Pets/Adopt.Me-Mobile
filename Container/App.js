@@ -20,6 +20,8 @@ import DetallePaseador from '../Components/Paseadores/DetallePaseador';
 import ListadoPaseadores from '../Components/Paseadores/ListadoPaseadores';
 import Top10Paseadores from '../Components/Paseadores/Top10Paseadores';
 import MyMap from '../Components/Mapas/mapa';
+import TodosLosPaseadores from '../Components/Mapas/TodosLosPaseadores';
+// import PayPal2 from '../Components/Paseadores/paypal';
 
 
 
@@ -88,6 +90,9 @@ export default function App() {
   options={{ headerShown: false }}
   />
   <Stack.Screen name="Mapa" component={MyMap}
+  options={{ headerShown: false }}
+  />
+  <Stack.Screen name="TodosLosPaseadores" component={TodosLosPaseadores}
   options={{ headerShown: false }}
   />
 
