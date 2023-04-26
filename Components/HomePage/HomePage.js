@@ -19,6 +19,7 @@ export default function HomePage() {
   const usuario = useSelector((state) => state.users);
   const usuario2 = usuario.data;
   const usuario3 = userId ? usuario2.filter(({ email }) => email === userId.email) : [];
+  console.log("usuario3", usuario3)
   const id = usuario3[0]?._id ?? null;
   const navigation = useNavigation();
 
@@ -113,18 +114,7 @@ export default function HomePage() {
             style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Ubicacion del Paseador</Text>
         </TouchableOpacity>
       </View>
-
-      <View style={{ marginTop: "15%", width: "50%" }}>
-        <TouchableOpacity
-         onPress={() => navigation.navigate('Top10Paseadores')}
-          color="#063455"
-          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
-          >
-            <Text 
-            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Top 10 Paseadores</Text>
-        </TouchableOpacity>
-      </View>
-
+      
       <View style={{ marginTop: "15%", width: "50%" }}>
         <TouchableOpacity
          onPress={() => navigation.navigate('PlanesMascotasPerdidas')}

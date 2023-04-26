@@ -21,7 +21,6 @@ import Top10Paseadores from '../Components/Paseadores/Top10Paseadores';
 import MyMap from '../Components/Mapas/mapa';
 import TodosLosPaseadores from '../Components/Mapas/TodosLosPaseadores';
 import GpsPaseador from '../Components/GpsTiempoReal/DarUbicacionPaseador';
-// import PayPal2 from '../Components/Paseadores/paypal';
 
 
 

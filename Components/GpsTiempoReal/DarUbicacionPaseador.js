@@ -83,7 +83,6 @@ export default function GpsPaseador() {
       intervalId = setInterval(() => {
         const updatedUser = Object.assign({}, detalleUser, { lat: region.latitude, lng: region.longitude });
         dispatch(putUser(updatedUser, id));
-        console.log("updatedUser", updatedUser)
       }, 2000);
     }
 
