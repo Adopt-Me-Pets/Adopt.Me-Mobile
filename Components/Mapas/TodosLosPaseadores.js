@@ -71,7 +71,7 @@ export default function TodosLosPaseadores() {
         {walkers2.map(walker => (
             <Marker
             key={walker._id}
-            coordinate={{ latitude: parseFloat(walker.lat), longitude: parseFloat(walker.lng) }}
+            coordinate={{ latitude: parseFloat(walker.lat2), longitude: parseFloat(walker.lng2) }}
             title={walker.nombre}
             onPress={() => handleMarkerPress(walker)}
 

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import getDetalleUsuario from "../../Actions/getDetalleUsuario";
 import getusers from "../../Actions/getusers";
 import { LoginContext } from "../Login/loginProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Perfil() {
 
@@ -15,19 +16,30 @@ export default function Perfil() {
     const usuario = useSelector((state) => state.users);
     const usuario2 = usuario.data;
     const usuario3 = userId ? usuario2.filter(({ email }) => email === userId.email) : [];
+    console.log("tipo", usuario3[0].tipo)
     const id = usuario3[0]?._id ?? null;
-    useContext(LoginContext);
+    const { isLoggedIn = false, setLoggedIn } = useContext(LoginContext);
 
     useEffect(() => {
             dispatch(getDetalleUsuario(id));
             dispatch(getusers())
     }, [id, dispatch]);
 
+    useEffect(() => {
+        async function checkLoggedIn() {
+          const authToken = await AsyncStorage.getItem('token');
+          if (authToken) {
+            setLoggedIn(true);
+          }
+        }
+    
+        checkLoggedIn();
+      }, [setLoggedIn]);
+
 
     const detalleUser = useSelector((state) => state.detalleUsuario); 
     const usuarioRol = detalleUser && detalleUser.roles ? detalleUser.roles[0] : null;
     const tipoUsuario = detalleUser && detalleUser.tipo ? detalleUser.tipo : null;
-    console.log("usuarioRol", tipoUsuario)
 
     if (usuarioRol === "63d1c3225aa2085acb263f1e") {
 
