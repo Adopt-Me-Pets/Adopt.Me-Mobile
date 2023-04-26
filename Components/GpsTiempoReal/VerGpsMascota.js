@@ -182,23 +182,3 @@ const moveToMarker = () => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    buttonContainer: {
-      position: 'absolute',
-      bottom: 20,
-      right: 20,
-      zIndex: 1,
-    },
-    button: {
-      backgroundColor: '#007AFF',
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-    },
-    buttonText: {
-      color: '#FFFFFF',
-      fontSize: 18,
-    },
-  });
-  
