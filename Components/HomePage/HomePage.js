@@ -8,21 +8,30 @@ import NavBar from "../NavBar/NavBar";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useState } from 'react';
 
 export default function HomePage() {
 
-  const dispatch = useDispatch();
-  const detalleUser = useSelector((state) => state.detalleUsuario); 
   const { isLoggedIn = false, setLoggedIn } = useContext(LoginContext);
-  const userData2 = useSelector((state) => state.userData);
-  const userId = userData2;
-  const usuario = useSelector((state) => state.users);
-  const usuario2 = usuario.data;
-  const usuario3 = userId ? usuario2.filter(({ email }) => email === userId.email) : [];
-  console.log("usuario3", usuario3)
-  const id = usuario3[0]?._id ?? null;
   const navigation = useNavigation();
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const storedUser = await AsyncStorage.getItem('user');
+        setUser(JSON.parse(storedUser));
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setIsLoading(true);
+    getUser();
+  }, [isLoggedIn]);
+
+  
   useEffect(() => {
     async function checkLoggedIn() {
       const authToken = await AsyncStorage.getItem('token');
@@ -35,7 +44,7 @@ export default function HomePage() {
   }, [setLoggedIn]);
 
   async function onClick() {
-    if (!usuario) {
+    if (!isLoggedIn) {
       ToastAndroid.show("Debes iniciar sesión para poder poner en adopción", ToastAndroid.SHORT);
       return;
     }
@@ -48,12 +57,6 @@ export default function HomePage() {
     navigation.navigate("RegistroMascota");
   }
 
-  useEffect(() => {
-    dispatch(getDetalleUsuario(id));
-    dispatch(getusers());
-  }, [id, dispatch]);
-
-  const usuarios = useSelector((state) => state.detalleUsuario);
   const hoverRef = useRef(null);
 
   const removeHoverClass = () => {
@@ -73,7 +76,7 @@ export default function HomePage() {
     }
   }, [hoverRef]);
 
-  if (isLoggedIn && usuarios.tipo === "paseador") {
+  if (isLoggedIn && !isLoading && user[0].tipo === "paseador") {
 
     return (
       <View  >
@@ -91,7 +94,7 @@ export default function HomePage() {
       </View>
     );
 
-  } else if (isLoggedIn && usuarios.paseadorContratado !== undefined && usuarios.paseadorContratado !== ""){
+  } else if (isLoggedIn && !isLoading && user[0].paseadorContratado !== undefined && user[0].paseadorContratado !== ""){
 
     return (
 <View>
@@ -189,7 +192,7 @@ export default function HomePage() {
     )
 
 
-  } else if (isLoggedIn && usuarios.paseadorContratado === "" && usuarios.paseadorContratado === undefined) {
+  } else if (isLoggedIn && !isLoading && user[0].paseadorContratado === "" && user[0].paseadorContratado === undefined) {
 
     return (
 

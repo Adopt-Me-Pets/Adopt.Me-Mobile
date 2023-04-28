@@ -18,16 +18,25 @@ export default function DetallePaseador({ route }) {
     const puntuacion = detallePaseador.puntuacion;
     const puntuaciones = puntuacion || []; 
     const promedio = puntuaciones.length > 0 ? (puntuaciones.reduce((a, b) => a + b) / puntuaciones.length).toFixed(3) : null;
-    const usuario = useSelector((state) => state.users);
-    const usuario2 = usuario.data;
     const { isLoggedIn, setLoggedIn } = useContext(LoginContext);
-    const userData2 = useSelector((state) => state.userData);
-    const userId = userData2;
-    console.log("paseador id", id)
-    const usuario3 = userId ? usuario2.filter(({ email }) => email === userId.email) : [];
-    console.log("usuario id", usuario3)
-    const idUsuario = usuario3[0]?._id ?? null;
+    const idUsuario = user ? user[0]._id : null;
     const [modalVisible, setModalVisible] = useState(false);
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function getUser() {
+          try {
+            const storedUser = await AsyncStorage.getItem('user');
+            setUser(JSON.parse(storedUser));
+            setIsLoading(false);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        setIsLoading(true);
+        getUser();
+      }, [isLoggedIn]);
 
     useEffect(() => {
         async function checkLoggedIn() {
@@ -40,13 +49,10 @@ export default function DetallePaseador({ route }) {
         checkLoggedIn();
       }, [setLoggedIn]);
     
-    let pais = null;
-    let usuario4 = null;
+      let pais = null;
 
-      if (isLoggedIn && usuario2 && usuario2.length > 0) {
-        const usuario4 = usuario2.filter(({ _id }) => _id === idUsuario)
-        const usuario5 = usuario4[0]
-        pais = usuario5.pais
+      if (isLoggedIn && !isLoading && user && user.length > 0) {
+        pais = user[0].pais
       }
 
     useEffect(() => {
@@ -55,7 +61,7 @@ export default function DetallePaseador({ route }) {
     }, [dispatch, id])
     
  
-if (isLoggedIn && pais === "Argentina") {
+if (isLoggedIn && !isLoading && user[0].pais === "Argentina") {
 
     return (
         
@@ -160,7 +166,7 @@ if (isLoggedIn && pais === "Argentina") {
         </View>
 
     )
-} else if (isLoggedIn && pais === "Colombia") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "Colombia") {
 
     return (
         
@@ -266,7 +272,7 @@ if (isLoggedIn && pais === "Argentina") {
 
     ) 
 
-} else if (isLoggedIn && pais === "Chile") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "Chile") {
 
     return (
         
@@ -372,7 +378,7 @@ if (isLoggedIn && pais === "Argentina") {
 
     ) 
 
-} else if (isLoggedIn && pais === "Uruguay") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "Uruguay") {
 
     return (
         
@@ -478,7 +484,7 @@ if (isLoggedIn && pais === "Argentina") {
 
     ) 
 
-} else if (isLoggedIn && pais === "Peru") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "Peru") {
 
     return (
         
@@ -584,7 +590,7 @@ if (isLoggedIn && pais === "Argentina") {
 
     ) 
 
-} else if (isLoggedIn && pais === "Brasil") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "Brasil") {
 
     return (
         
@@ -690,7 +696,7 @@ if (isLoggedIn && pais === "Argentina") {
 
     ) 
 
-} else if (isLoggedIn && pais === "Mexico") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "Mexico") {
 
     return (
         
@@ -796,7 +802,7 @@ if (isLoggedIn && pais === "Argentina") {
 
     ) 
 
-} else if (isLoggedIn && pais === "United States") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "United States") {
 
     return (
         
@@ -902,7 +908,7 @@ if (isLoggedIn && pais === "Argentina") {
 
     ) 
 
-} else if (isLoggedIn && pais === "Canada") {
+} else if (isLoggedIn  && !isLoading && user[0].pais === "Canada") {
 
     return (
         

@@ -17,30 +17,15 @@ import { Rating } from 'react-native-ratings';
 export default function  VerGpsMascota() {
 
     const navigation = useNavigation();
-    const { setLoggedIn } = useContext(LoginContext);
-    const userData2 = useSelector((state) => state.userData);
-    const userId = userData2;
+    const { isLoggedIn, setLoggedIn } = useContext(LoginContext);
     const usuario = useSelector((state) => state.users);
-    const usuario2 = usuario.data;
-    const usuario3 = userId ? usuario2.filter(({ email }) => email === userId.email) : [];
-    const id = usuario3[0]?._id ?? null;
-
-    const detalleUsuario = useSelector((state) => state.detalleUsuario)
+    const usuario2 = usuario.data ? usuario.data : [];
     const walkers2 = usuario2.filter(({ tipo }) => tipo === "paseador") 
-    const walkers3 = walkers2.filter(({ _id }) => _id === detalleUsuario.paseadorContratado) 
-    const idPaseador = walkers3[0]._id;
-    let puntuaciones = walkers3[0].puntuacion;
 
-      const dispatch = useDispatch();
-  
-  useEffect(() => {
-        dispatch(getDetalleUsuario(id));
-      }, [dispatch, id]);
+    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
 
-    const latitude = walkers3 && walkers3.length > 0 ? walkers3.map(({ lat }) => lat) : null;
-    const longitude = walkers3 && walkers3.length > 0 ? walkers3.map(({ lng }) => lng): null;
-    const latitude1 = latitude[0]
-    const longitude1 = longitude[0]
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -49,6 +34,28 @@ export default function  VerGpsMascota() {
       
         return () => clearInterval(interval);
       }, [dispatch]);
+
+      useEffect(() => {
+        async function getUser() {
+          try {
+            const storedUser = await AsyncStorage.getItem('user');
+            setUser(JSON.parse(storedUser));
+            setIsLoading(false);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        setIsLoading(true);
+        getUser();
+      }, [isLoggedIn]);
+
+      const walkers3 = user ? walkers2.filter(({ _id }) => _id === user[0].paseadorContratado) : [];
+      const idPaseador = walkers3.length > 0 ? walkers3[0]._id : null;
+      let puntuaciones = walkers3.length > 0 ? walkers3[0].puntuacion : null;
+      const latitude = walkers3.length > 0 ? walkers3.map(({ lat }) => lat) : null;
+      const longitude = walkers3.length > 0 ? walkers3.map(({ lng }) => lng): null;
+      const latitude1 = latitude ? latitude[0] : null;
+      const longitude1 = longitude ? longitude[0] : null;
       
     
       useEffect(() => {
@@ -62,8 +69,6 @@ export default function  VerGpsMascota() {
 
         const [defaultRating, setDefaultRating] = useState(0);
         const [maxRating, setMaxRating] = useState(5);
-
-        console.log("defaultRating", defaultRating)
       
         const handleRating = (rating) => {
           setDefaultRating(rating);

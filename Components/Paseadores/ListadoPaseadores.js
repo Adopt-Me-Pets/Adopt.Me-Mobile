@@ -25,15 +25,28 @@ export default function ListadoPaseadores() {
     const [selectedCity, setSelectedCity] = useState(AsyncStorage.getItem('selectedCity') || '');
     const paseadores = Array.isArray(walkers2) && walkers2.length > 0 ? walkers2.filter(({ ciudad }) => ciudad === selectedCity._z || usuarios.ciudad) : [];
     useContext(LoginContext);
-    const userData2 = useSelector((state) => state.userData);
-    const userId = userData2;
-    const usuario3 = userId ? usuario2.filter(({ email }) => email === userId.email) : [];
-    const id = usuario3[0]?._id ?? null;
+    const [user, setUser] = useState(null);
+    const id = user ? user[0]._id : null;
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         dispatch(getusers())
         dispatch(getDetalleUsuario(id))
     }, [id, dispatch])
+
+    useEffect(() => {
+      async function getUser() {
+        try {
+          const storedUser = await AsyncStorage.getItem('user');
+          setUser(JSON.parse(storedUser));
+          setIsLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      setIsLoading(true);
+      getUser();
+    }, [isLoggedIn]);
 
     useEffect(() => {
         const checkLoginStatus = async () => {
