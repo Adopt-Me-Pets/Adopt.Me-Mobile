@@ -14,13 +14,14 @@ import ReportarMascotaPerdida from '../Components/MascotasPerdidas/ReportarMasco
 import BuscarMascotaPerdida from '../Components/MascotasPerdidas/BuscarMascota';
 import HomePerros from '../Components/AdoptarMascota/HomePerros';
 import HomeGatos from '../Components/AdoptarMascota/HomeGatos';
-import PlanesMascotaPerdida from '../Components/PlanesMascotasPerdidas/PlanesMascotasPerdidas';
 import DetallePaseador from '../Components/Paseadores/DetallePaseador';
 import ListadoPaseadores from '../Components/Paseadores/ListadoPaseadores';
 import Top10Paseadores from '../Components/Paseadores/Top10Paseadores';
 import MyMap from '../Components/Mapas/mapa';
 import TodosLosPaseadores from '../Components/Mapas/TodosLosPaseadores';
 import GpsPaseador from '../Components/GpsTiempoReal/DarUbicacionPaseador';
+import DetallePerdida from '../Components/MascotasPerdidas/DetallePerdida';
+import MapaPerdidas from '../Components/Mapas/MapaPerdidas';
 
 
 
@@ -76,9 +77,6 @@ export default function App() {
    <Stack.Screen name="BuscarMascota" component={BuscarMascotaPerdida} 
   // options={{ headerShown: false }}
   />
-   <Stack.Screen name="PlanesMascotasPerdidas" component={PlanesMascotaPerdida} 
-  // options={{ headerShown: false }}
-  />
   <Stack.Screen name="DetallePaseador" component={DetallePaseador} 
   // options={{ headerShown: false }}
   />
@@ -92,6 +90,12 @@ export default function App() {
   // options={{ headerShown: false }}
   />
   <Stack.Screen name="TodosLosPaseadores" component={TodosLosPaseadores}
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="DetallePerdida" component={DetallePerdida}
+  // options={{ headerShown: false }}
+  />
+  <Stack.Screen name="MapaPerdidas" component={MapaPerdidas}
   // options={{ headerShown: false }}
   />
 

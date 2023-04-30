@@ -1,9 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from "react-redux";
 import { LoginContext } from '../Login/loginProvider';
 import { useContext, useEffect, useRef } from "react";
-import getDetalleUsuario from "../../Actions/getDetalleUsuario";
-import getusers from "../../Actions/getusers";
 import NavBar from "../NavBar/NavBar";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -118,16 +115,6 @@ export default function HomePage() {
         </TouchableOpacity>
       </View>
       
-      <View style={{ marginTop: "15%", width: "50%" }}>
-        <TouchableOpacity
-         onPress={() => navigation.navigate('PlanesMascotasPerdidas')}
-          color="#063455"
-          style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
-          >
-            <Text 
-            style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Planes Mascota Perdida</Text>
-        </TouchableOpacity>
-      </View>
 
       <View style={{ marginTop: "15%", width: "50%" }}>
         <TouchableOpacity
@@ -229,16 +216,6 @@ export default function HomePage() {
                 </TouchableOpacity>
               </View>
 
-              <View style={{ marginTop: "15%", width: "50%" }}>
-                <TouchableOpacity
-                 onPress={() => navigation.navigate('PlanesMascotasPerdidas')}
-                  color="#063455"
-                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
-                  >
-                    <Text 
-                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Planes Mascota Perdida</Text>
-                </TouchableOpacity>
-              </View>
 
               <View style={{ marginTop: "15%", width: "50%" }}>
                 <TouchableOpacity
@@ -346,17 +323,6 @@ export default function HomePage() {
                   >
                     <Text 
                     style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Ver Top 10 Paseadores</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={{ marginTop: "15%", width: "50%" }}>
-                <TouchableOpacity
-                 onPress={() => navigation.navigate('PlanesMascotasPerdidas')}
-                  color="#063455"
-                  style={{ backgroundColor: '#063455', borderRadius: 15, padding: 15}}
-                  >
-                    <Text 
-                    style={{ color: 'white', textAlign: 'center', fontSize: 20}}>Planes Mascota Perdida</Text>
                 </TouchableOpacity>
               </View>
 
