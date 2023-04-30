@@ -14,6 +14,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as Location from 'expo-location';
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
+import NavBar from "../NavBar/NavBar";
 
 export default function ReportarMascotaPerdida() {
 
@@ -175,6 +176,10 @@ export default function ReportarMascotaPerdida() {
 
     return (
 
+      <View>
+
+        <NavBar />
+
         <ScrollView>
 
              <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -301,6 +306,8 @@ export default function ReportarMascotaPerdida() {
 
 
         </ScrollView>
+
+        </View>
     )
 }
 
