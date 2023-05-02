@@ -19,7 +19,6 @@ export default function DetallePaseador({ route }) {
     const puntuaciones = puntuacion || []; 
     const promedio = puntuaciones.length > 0 ? (puntuaciones.reduce((a, b) => a + b) / puntuaciones.length).toFixed(3) : null;
     const { isLoggedIn, setLoggedIn } = useContext(LoginContext);
-    const idUsuario = user ? user[0]._id : null;
     const [modalVisible, setModalVisible] = useState(false);
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
