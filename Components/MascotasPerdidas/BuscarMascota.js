@@ -15,6 +15,7 @@ export default function BuscarMascotaPerdida() {
 
     const dispatch = useDispatch();
     const allPets = useSelector((state)=>state.animalesPerdidosCopia);
+  /*   console.log(allPets) */
     const navigation = useNavigation();
 
     useEffect(()=>{      
