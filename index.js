@@ -4,7 +4,7 @@ import { View, StyleSheet } from "react-native";
 import App from "./Container/App";
 import { Provider } from "react-redux";
 import store from "./Store/store";
-import { LoginProvider } from "../AdoptMe/Components/Login/loginProvider";
+import { LoginProvider } from "./Components/Login/loginProvider";
 import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:3001";
