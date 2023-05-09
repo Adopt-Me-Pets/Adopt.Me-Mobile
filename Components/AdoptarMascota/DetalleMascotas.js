@@ -1,8 +1,8 @@
-import { Text, View, ToastAndroid, ScrollView } from "react-native";
+import { Text, View, ToastAndroid, ScrollView, Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginContext } from "../Login/loginProvider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import getDetalleUsuario from "../../Actions/getDetalleUsuario";
 import getusers from "../../Actions/getusers";
 import getmascotasbyid from "../../Actions/getmascotabyid";
@@ -116,6 +116,7 @@ export default function DetalleMascotas({ route }) {
             </View>
 
         <View>
+        <Image source={{ uri: detail.imagen }} style={{ width: 200, height: 200}} />
                 <Text>Nombre: {detail.nombre}</Text>
                 <Text>Raza: {detail.raza}</Text>
                 <Text>Estado: {detail.estado}</Text>
