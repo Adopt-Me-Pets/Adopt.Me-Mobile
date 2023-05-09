@@ -1,15 +1,18 @@
 import React from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet, Button } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 
 
 export default function CardPerros({ nombre, raza, id, perro, edad, imagen }) {
+  
+  const navigation = useNavigation();
 
     return (
 
         <View style={styles.container}>
           <View>
-            <Image style={styles.tinyLogo}>{imagen}</Image>
+            <Image source={{ uri: imagen }} style={styles.tinyLogo} />
           </View>
           <View>
             <Text>Nombre: {nombre}</Text>
@@ -18,6 +21,14 @@ export default function CardPerros({ nombre, raza, id, perro, edad, imagen }) {
             <Text>Raza: {raza}</Text>
             <Text>Id: {id}</Text>
           </View>
+
+          <Button
+        title="Ver Detalles"
+        onPress={() => {
+          navigation.navigate('DetalleMascotas', { id })
+        }}
+        color="#EB274B"
+      />
         </View>
     )
 

@@ -6,15 +6,13 @@ import NavBar from "../NavBar/NavBar";
 import getperro from "../../Actions/getperros";
 import Loading from "../Loader/Loader";
 import CardPerros from "../CardsMascotas/CardPerros"
+import { ScrollView } from "react-native";
 
 
 export default function HomePerros() {
 
   const dispatch = useDispatch();
-  const copiaPerros = useSelector((state)=>state.perrosCopia)
-  console.log(copiaPerros)
- /*  const perros = copiaPerros.length
-   console.log(perros) */
+  const perros = useSelector((state)=>state.perrosCopia)
 
 
     useEffect(() => {
@@ -22,18 +20,20 @@ export default function HomePerros() {
   }, [])  
   
 
-/* if (perros.length === 0) {
+ if (perros.length === 0) {
 return (
   <>
   <Loading />
   </>
 )
-} */
+} 
     return (
+      <>
+      <ScrollView>
          <View >
           <NavBar />
            <Text> Perros en Adopcion</Text>   
-             {copiaPerros.length > 0 && copiaPerros.map(p => {
+             {perros.length > 0 && perros.map(p => {
               return (
 
                            <CardPerros 
@@ -47,5 +47,7 @@ return (
             }
               
         </View>  
+        </ScrollView>
+        </>
     )
 }
