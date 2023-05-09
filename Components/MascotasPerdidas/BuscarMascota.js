@@ -76,11 +76,12 @@ export default function BuscarMascotaPerdida() {
 
 
 
-        <View>
+        <View style={{ marginBottom: "50%"}}>
 
         {allPets.length > 0 && allPets.map(a => (
         
             <CardPerdidos
+            key={a.id}
             id = {a._id}
             gato = {a.gato}
             perro = {a.perro}
